@@ -1,0 +1,16 @@
+{
+    "functionnal": {
+        "mandatory": true
+    },
+    "google": {
+        "scripts" : [
+            "analytics",
+            "google",
+            "gtag"
+        ],
+        "cookies": [
+            "^_ga",
+            "^_gid"
+        ]
+    }
+}

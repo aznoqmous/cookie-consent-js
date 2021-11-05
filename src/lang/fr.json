@@ -1,0 +1,30 @@
+{
+    "cookies": "cookies",
+    "accept": "Accepter",
+    "deny": "Refuser",
+    "allow": "Autoriser",
+    "disallow": "Interdire",
+    "allowAll": "Autoriser tout",
+    "disallowAll": "Interdire tout",
+    "acceptAll": "Accepter tout",
+    "denyAll": "Refuser tout",
+    "customize": "Personnaliser",
+
+    "popupTitle": "Paramètres des cookies",
+    "popupDisclaimer": "Ce site utilise des cookies et vous donne le contrôle sur ceux que vous souhaitez activer",
+    "legalNotice": "Politique de confidentialité",
+
+    "popupDetailsTitle": "Panneau de gestion des cookies",
+    "popupDetailsDisclaimer": "En autorisant ces services tiers, vous acceptez le dépôt et la lecture de cookies et l'utilisation de technologies de suivi nécessaires à leur bon fonctionnement.",
+
+    "functionnal": {
+        "name": "Cookies fonctionnels",
+        "description": ""
+    },
+
+    "google": {
+        "name": "Google",
+        "description": "Bliblou"
+    }
+
+}
