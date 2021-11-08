@@ -28,4 +28,11 @@ export default class Cookies {
         document.cookie = cookie
     }
 
+    static remove(key){
+        // from tarteaucitron
+        document.cookie = key + '="cookie-consent"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/;';
+        document.cookie = key + '="cookie-consent"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/; domain=.' + location.hostname + ';';
+        document.cookie = key + '="cookie-consent"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/; domain=.' + location.hostname.split('.').slice(-2).join('.') + ';';
+    }
+
 }

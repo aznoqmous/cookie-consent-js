@@ -1,5 +1,3 @@
-//const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 module.exports = {
     module: {
         rules: [
@@ -11,22 +9,16 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    /*{
-                        loader: MiniCssExtractPlugin.loader,
-                    },*/
                     { loader: "css-loader" },
                     { loader: "sass-loader" },
                 ]
-            }
+            },
+            {test: /\.svg?$/, loader: "svg-url-loader"}
         ]
     },
     resolve: {
         extensions: ['*', '.js']
     },
     plugins: [
-        /*new MiniCssExtractPlugin({
-            filename: "[name].min.css",
-            chunkFilename: "[id].min.css"
-        })*/
     ]
 };

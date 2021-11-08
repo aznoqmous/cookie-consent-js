@@ -20,7 +20,10 @@
 </head>
 <body>
     <script>
-        CookieConsent.init()
+        CookieConsent.init({
+            services: ["google"],
+            legalNoticeUrl: "/mentions-légales"
+        })
     </script>
     
 </body>

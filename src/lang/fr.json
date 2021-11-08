@@ -10,7 +10,7 @@
     "denyAll": "Refuser tout",
     "customize": "Personnaliser",
 
-    "popupTitle": "Paramètres des cookies",
+    "popupTitle": "",
     "popupDisclaimer": "Ce site utilise des cookies et vous donne le contrôle sur ceux que vous souhaitez activer",
     "legalNotice": "Politique de confidentialité",
 
@@ -19,12 +19,20 @@
 
     "functionnal": {
         "name": "Cookies fonctionnels",
-        "description": ""
+        "description": "Ce site utilise des cookies nécessaires à son bon fonctionnement.<br>Ils ne peuvent pas être désactivés."
     },
 
     "google": {
-        "name": "Google",
-        "description": "Bliblou"
+        "name": "Google Analytics",
+        "description": "Ces cookies servent à générer des statistiques de fréquentation du site."
+    },
+    "facebook": {
+        "name": "Facebook Pixel",
+        "description": "Ces cookies permettent de faciliter le partage de contenu sur les réseaux sociaux."
+    },
+    "youtube": {
+        "name": "Youtube",
+        "description": "Ces cookies sont utilisés par YouTube pour permettre à l'utilisateur de visualiser directement sur le site le contenu multimédia."
     }
 
 }

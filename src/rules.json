@@ -9,8 +9,17 @@
             "gtag"
         ],
         "cookies": [
+            "^_utm",
             "^_ga",
             "^_gid"
+        ]
+    },
+    "facebook": {
+        "script": [
+            "fbq"
+        ],
+        "cookies": [
+            "^_fb"
         ]
     }
 }
