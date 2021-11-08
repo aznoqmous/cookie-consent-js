@@ -243,7 +243,7 @@ export default class CookieConsent {
     isScriptBanned(script){
         return this.bannedScriptRules.some(rule => 
             (script.src && script.src.match(rule))
-            || script.innerHTML.match(rule)
+            || (!script.innerHTML.match("CookieConsent") && script.innerHTML.match(rule))
         )
     }
 
