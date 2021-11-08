@@ -8,6 +8,8 @@ $padding: 1rem;
 
 .cookie-consent-popup,
 .cookie-consent-popup-details {
+    font-size: 1rem;
+    z-index: 1000000000;
     font-family: sans-serif;
     button {
         padding: 0.4rem 0.6rem;
@@ -78,8 +80,6 @@ $padding: 1rem;
     justify-content: center;
     align-items: center;
 
-    z-index: 1000000000000;
-
     opacity: 0;
     pointer-events: none;
     &.active {
@@ -111,6 +111,7 @@ $padding: 1rem;
             display: flex;
             flex-direction: column;
             width: 100%;
+            text-align: left;
             .service {
                 display: flex;
                 justify-content: space-between;
