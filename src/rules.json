@@ -9,7 +9,7 @@
             "gtag"
         ],
         "cookies": [
-            "^_utm",
+            "^__utm",
             "^_ga",
             "^_gid"
         ]

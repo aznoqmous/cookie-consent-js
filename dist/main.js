@@ -208,7 +208,7 @@ eval("module.exports = JSON.parse(\"{\\\"cookies\\\":\\\"cookies\\\",\\\"accept\
 /*! exports provided: functionnal, google, facebook, default */
 /***/ (function(module) {
 
-eval("module.exports = JSON.parse(\"{\\\"functionnal\\\":{\\\"mandatory\\\":true},\\\"google\\\":{\\\"scripts\\\":[\\\"analytics\\\",\\\"google\\\",\\\"gtag\\\"],\\\"cookies\\\":[\\\"^_utm\\\",\\\"^_ga\\\",\\\"^_gid\\\"]},\\\"facebook\\\":{\\\"script\\\":[\\\"fbq\\\"],\\\"cookies\\\":[\\\"^_fb\\\"]}}\");\n\n//# sourceURL=webpack:///./src/rules.json?");
+eval("module.exports = JSON.parse(\"{\\\"functionnal\\\":{\\\"mandatory\\\":true},\\\"google\\\":{\\\"scripts\\\":[\\\"analytics\\\",\\\"google\\\",\\\"gtag\\\"],\\\"cookies\\\":[\\\"^__utm\\\",\\\"^_ga\\\",\\\"^_gid\\\"]},\\\"facebook\\\":{\\\"script\\\":[\\\"fbq\\\"],\\\"cookies\\\":[\\\"^_fb\\\"]}}\");\n\n//# sourceURL=webpack:///./src/rules.json?");
 
 /***/ }),
 
