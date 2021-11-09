@@ -15,6 +15,16 @@
             "^_gid"
         ]
     },
+    "gtm": {
+        "type": "api",
+        "scripts": [
+            "googletagmanager"
+        ],
+        "cookies": [
+            "^_gcl_au",
+            "^_gat_"
+        ]
+    },
     "facebook": {
         "type": "statistic",
         "scripts": [

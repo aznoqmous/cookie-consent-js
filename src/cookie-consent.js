@@ -84,6 +84,7 @@ export default class CookieConsent {
             innerHTML: Lang.get('disallowAll'),
             className: "disallow"
         }, 'button')
+
         let customize = this.create(buttons, { innerHTML: Lang.get('customize') }, 'button')
         acceptAll.addEventListener('click', ()=>{ this.acceptAll() })
         denyAll.addEventListener('click', ()=>{ this.denyAll() })
@@ -132,7 +133,13 @@ export default class CookieConsent {
         this.addedTypes = {}
         Object.keys(Rules).filter(r => this.config.services.includes(r)).map(key =>  this.addedTypes[Rules[key].type] = false)
 
-        this.config.services.map(k => {
+        this.config.services
+        .sort((a,b)=> {
+            if(Rules[a].type == 'functionnal') return -1
+            if(Rules[b].type == 'functionnal') return 1
+            else return Rules[a].type > Rules[b].type ? 1 : -1
+        })
+        .map(k => {
             this.addService(k, services)
         })
         this.updatePopupDetails()
