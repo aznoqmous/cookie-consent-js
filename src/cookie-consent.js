@@ -33,6 +33,8 @@ export default class CookieConsent {
     
     init(config){
         this.config = Object.assign(this.config, config)
+        if(!this.config.services.includes('functionnal')) this.config.services.unshift('functionnal')
+        
         Utils.DOMLoaded()
         .then(()=>{
             this.buildPopup()

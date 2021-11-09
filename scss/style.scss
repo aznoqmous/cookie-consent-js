@@ -20,7 +20,9 @@ $padding: 1rem;
     transition: all 0.1s ease-out;
     border-radius: 0.2rem;
     font-weight: bold;
-    &:hover:not(:disabled) {
+    cursor: unset;
+    &:hover:not(:disabled):not(.active) {
+        cursor: pointer;
         background: $color_a;
         color: $color_b;
     }
