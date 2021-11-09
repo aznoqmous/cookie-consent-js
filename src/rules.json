@@ -1,8 +1,10 @@
 {
     "functionnal": {
+        "type": "functionnal",
         "mandatory": true
     },
     "google": {
+        "type": "statistic",
         "scripts" : [
             "google",
             "gtag"
@@ -14,6 +16,7 @@
         ]
     },
     "facebook": {
+        "type": "statistic",
         "scripts": [
             "fbq",
             "facebook"
@@ -31,11 +34,13 @@
         ]
     },
     "youtube": {
+        "type": "video",
         "iframes": [
             "youtube.com"
         ]
     },
     "vimeo": {
+        "type": "video",
         "iframes": [
             "vimeo.com"
         ]

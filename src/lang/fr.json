@@ -39,5 +39,12 @@
     "vimeo": {
         "name": "Vimeo",
         "description": "Ces cookies sont utilisés par Vimeo pour permettre à l'utilisateur de visualiser directement sur le site le contenu multimédia."
+    },
+
+    "types": {
+        "functionnal": "Cookies obligatoires",
+        "statistic": "Mesure d'audience",
+        "marketing": "Publicitaires",
+        "video": "Vidéos"
     }
 }

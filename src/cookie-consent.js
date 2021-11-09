@@ -63,18 +63,25 @@ export default class CookieConsent {
         if(!this.isDataSet()) this.popup.classList.add('active')
 
         let cookieFigure = this.create(this.popup, {}, "figure")
-        let cookieImg = this.create(cookieFigure, { 
-            src: CookieSvg,
-            style: `filter: drop-shadow(0 1.5rem ${this.config.cookieColor})`
-        }, 'img')
+
+        let cookieImg = this.create(cookieFigure, {
+            innerHTML: CookieSvg,
+            style: `fill: ${this.config.cookieColor}`
+        }, 'figure')
 
         let title = this.create(this.popup, { innerHTML: this.config.title })
         let disclaimer = this.create(this.popup, { innerHTML: this.config.disclaimer, className: "disclaimer" })
 
         let buttons = this.create(this.popup, { className: "buttons" })
 
-        let acceptAll = this.create(buttons, { innerHTML: Lang.get('allowAll') }, 'button')
-        let denyAll = this.create(buttons, { innerHTML: Lang.get('disallowAll') }, 'button')
+        let acceptAll = this.create(buttons, { 
+            innerHTML: Lang.get('allowAll'),
+            className: "allow"
+        }, 'button')
+        let denyAll = this.create(buttons, { 
+            innerHTML: Lang.get('disallowAll'),
+            className: "disallow"
+        }, 'button')
         let customize = this.create(buttons, { innerHTML: Lang.get('customize') }, 'button')
         acceptAll.addEventListener('click', ()=>{ this.acceptAll() })
         denyAll.addEventListener('click', ()=>{ this.denyAll() })
@@ -107,12 +114,22 @@ export default class CookieConsent {
         let disclaimer = this.create(this.popupDetails, { innerHTML: this.config.popupDetailsDisclaimer, className: "disclaimer" })
         
         let buttons = this.create(this.popupDetails, { className: "buttons" })
-        let acceptAll = this.create(buttons, { innerHTML: Lang.get('allowAll') }, 'button')
-        let denyAll = this.create(buttons, { innerHTML: Lang.get('disallowAll') }, 'button')
+        let acceptAll = this.create(buttons, { 
+            innerHTML: Lang.get('allowAll'),
+            className: "allow"
+        }, 'button')
+        let denyAll = this.create(buttons, { 
+            innerHTML: Lang.get('disallowAll'),
+            className: "disallow"
+        }, 'button')
         acceptAll.addEventListener('click', ()=>{ this.acceptAll() })
         denyAll.addEventListener('click', ()=>{ this.denyAll() })
 
+
         let services = this.create(this.popupDetails, {className: "services"})
+        this.addedTypes = {}
+        Object.keys(Rules).filter(r => this.config.services.includes(r)).map(key =>  this.addedTypes[Rules[key].type] = false)
+
         this.config.services.map(k => {
             this.addService(k, services)
         })
@@ -124,18 +141,28 @@ export default class CookieConsent {
         }, "a")
     }
     addService(k, parent){
+        
         let data = this.getData()
         let lang = Lang.get(k)
+        let serviceType = Rules[k].type
+        if(!this.addedTypes[serviceType]){
+            this.create(parent, { 
+                innerHTML: Lang.get("types")[serviceType],
+                className: "type"
+            }, 'small')
+            this.addedTypes[serviceType] = true
+        }
+
         let service = this.create(parent, {
             className: "service"
         })
-        let serviceDetails = this.create(service)
+        let serviceDetails = this.create(service, { className: "details" })
         this.create(serviceDetails, {
             innerHTML: lang.name
         }, 'strong')
         this.create(serviceDetails, {
             innerHTML: lang.description,
-        })
+        }, 'small')
         let input = this.create(service, { 
             name: k, 
             value: data[k],

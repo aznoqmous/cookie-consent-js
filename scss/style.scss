@@ -1,10 +1,30 @@
 $color_dark: #474747;
-$color_green: #BADA55;
-$color_red: #FF3300;
+$color_green: #28a745;
+$color_red: #dc3545;
+$color_grey: #eee;
 $color_white: #fff;
 $border-radius: 0.2rem;
 $box-shadow: 0 0 10px rgba(0,0,0,0.5);
 $padding: 1rem;
+
+@mixin mobile {
+    @media (max-width: 720px) {
+        @content;
+    }
+}
+
+@mixin button($color_a: $color_dark, $color_b: $color_white) {
+    border: 2px solid $color_b;
+    color: $color_a;
+    background: $color_b;
+    transition: all 0.1s ease-out;
+    border-radius: 0.2rem;
+    font-weight: bold;
+    &:hover:not(:disabled) {
+        background: $color_a;
+        color: $color_b;
+    }
+}
 
 .cookie-consent-popup,
 .cookie-consent-popup-details {
@@ -14,6 +34,13 @@ $padding: 1rem;
     button {
         padding: 0.4rem 0.6rem;
         cursor: pointer;
+        @include button;
+        &.allow {
+            @include button($color_white, $color_green);
+        }
+        &.disallow {
+            @include button($color_white, $color_red);
+        }
     }
     .buttons {
         display: flex;
@@ -45,9 +72,6 @@ $padding: 1rem;
         margin: 0;
         cursor: pointer;
         user-select: none;
-        img {
-            transform: translate(0, -1.5rem);
-        }
     }
     &:not(.active){
         > div, > a {
@@ -61,6 +85,9 @@ $padding: 1rem;
         > div,
         > a {
             display: flex;
+        }
+        > a {
+            font-size: 0.8rem;
         }
         figure {
             display: none;
@@ -96,7 +123,9 @@ $padding: 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;
-        @media (max-width: 720px) {
+        max-height: calc(100vh - 4rem);
+        overflow-y: scroll;
+        @include mobile {
             max-width: calc(100vw - 4rem);
         }
 
@@ -107,19 +136,43 @@ $padding: 1rem;
             text-align: center;
             margin-bottom: 1rem;
         }
+        > a {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
         .services {
             display: flex;
             flex-direction: column;
             width: 100%;
             text-align: left;
+            .type {
+                margin-top: 1rem;
+                background: $color_dark;
+                color: $color_white;
+                padding: 0.4rem 0.8rem;
+            }
             .service {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 0.5rem;
+                padding: 0.5rem 0.8rem;
+                background: $color_grey;
+                @include mobile {
+                    flex-direction: column;
+                    > .buttons {
+                        margin-top: 0.5rem;
+                    }
+                }
+                .details {
+                    display: flex;
+                    flex-direction: column;
+                }
                 button {
-                    opacity: 0.5;
                     width: 5rem;
-                    &.active {
+                    &:disabled, 
+                    &:not(.active):not(:hover) {
+                        opacity: 0.2;
+                    }
+                    &.active:not(:disabled) {
                         opacity: 1;
                     }
                 }
