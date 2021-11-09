@@ -16,6 +16,8 @@
 
     "popupDetailsTitle": "Panneau de gestion des cookies",
     "popupDetailsDisclaimer": "En autorisant ces services tiers, vous acceptez le dépôt et la lecture de cookies et l'utilisation de technologies de suivi nécessaires à leur bon fonctionnement.",
+    
+    "iframeBlocked": "%s est désactivé.",
 
     "functionnal": {
         "name": "Cookies fonctionnels",
@@ -33,6 +35,9 @@
     "youtube": {
         "name": "Youtube",
         "description": "Ces cookies sont utilisés par YouTube pour permettre à l'utilisateur de visualiser directement sur le site le contenu multimédia."
+    },
+    "vimeo": {
+        "name": "Vimeo",
+        "description": "Ces cookies sont utilisés par Vimeo pour permettre à l'utilisateur de visualiser directement sur le site le contenu multimédia."
     }
-
 }

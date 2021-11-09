@@ -4,7 +4,6 @@
     },
     "google": {
         "scripts" : [
-            "analytics",
             "google",
             "gtag"
         ],
@@ -15,11 +14,30 @@
         ]
     },
     "facebook": {
-        "script": [
-            "fbq"
+        "scripts": [
+            "fbq",
+            "facebook"
         ],
         "cookies": [
-            "^_fb"
+            "^_fb",
+            "^datr",
+            "^fr",
+            "^reg_ext_ref",
+            "^reg_fb_gate",
+            "^reg_fb_ref",
+            "^sb",
+            "^wd",
+            "^x-src"
+        ]
+    },
+    "youtube": {
+        "iframes": [
+            "youtube.com"
+        ]
+    },
+    "vimeo": {
+        "iframes": [
+            "vimeo.com"
         ]
     }
 }

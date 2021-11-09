@@ -11,7 +11,7 @@ export default class CookieConsent {
 
     constructor(){
         this.config = {
-            services: ["google", "facebook"],
+            services: Object.keys(Rules),
             title: Lang.get("popupTitle"),
             disclaimer: Lang.get("popupDisclaimer"),
             legalNoticeText: Lang.get('legalNotice'),
@@ -25,6 +25,7 @@ export default class CookieConsent {
 
         this.getBannedScriptRules()
         this.getBannedCookieRules()
+        this.getBannedIframeRules()
 
         this.observe()
         this.overrideCookieSetter()
@@ -36,6 +37,7 @@ export default class CookieConsent {
         .then(()=>{
             this.buildPopup()
         })
+        this.deleteBannedCookies()
     }
 
     /**
@@ -111,7 +113,6 @@ export default class CookieConsent {
         denyAll.addEventListener('click', ()=>{ this.denyAll() })
 
         let services = this.create(this.popupDetails, {className: "services"})
-        this.addService('functionnal', services)
         this.config.services.map(k => {
             this.addService(k, services)
         })
@@ -165,6 +166,19 @@ export default class CookieConsent {
                 this.updatePopupDetails()
             })
         }
+    }
+    accept(key){
+        let field = this.popupDetails.querySelector(`.service input[name="${key}"]`)
+        field.value = true
+        field.parentElement.querySelector('.allow').classList.add('active')
+        field.parentElement.querySelector('.disallow').classList.remove('active')
+        this.updatePopupDetails()
+        this.savePopupDetailsData()
+    }
+    deny(key){
+        this.popupDetails.querySelector(`.service input[name="${key}"]`).value = false
+        this.updatePopupDetails()
+        this.savePopupDetailsData()
     }
     acceptAll(){
         [...this.popupDetails.querySelectorAll('.service input[type="hidden"]')]
@@ -235,11 +249,10 @@ export default class CookieConsent {
         let data = this.getData()
         this.bannedScriptRules = []
         Object.keys(Rules)
-            .filter(k => data && data[k] && data[k] != "true")
+            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
             .filter(k => Rules[k].scripts)
             .map(k => this.bannedScriptRules = [...this.bannedScriptRules, ...Rules[k].scripts])
     }
-
     isScriptBanned(script){
         return this.bannedScriptRules.some(rule => 
             (script.src && script.src.match(rule))
@@ -254,17 +267,73 @@ export default class CookieConsent {
         let data = this.getData()
         this.bannedCookieRules = []
         Object.keys(Rules)
-            .filter(k => data && data[k] && data[k] !== "true")
+            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
             .filter(k => Rules[k].cookies)
             .map(k => this.bannedCookieRules = [...this.bannedCookieRules, ...Rules[k].cookies])
     }
     deleteBannedCookies(){
         Object.keys(Cookies.getAll())
-        .map(key => {
-            if(this.bannedCookieRules.some(rule => key.match(rule))) Cookies.remove(key, "/")
-        })
+        .filter(key => this.bannedCookieRules.some(rule => key.match(rule)))
+        .map(key => Cookies.remove(key, "/"))
     }
     
+    /**
+     * Iframes
+     */
+    getBannedIframeRules(){
+        let data = this.getData()
+        this.bannedIframeRules = []
+        Object.keys(Rules)
+            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
+            .filter(k => Rules[k].iframes)
+            .map(k => this.bannedIframeRules = [...this.bannedIframeRules, ...Rules[k].iframes])
+    }
+    isIframeBanned(iframe){
+        return this.bannedIframeRules.some(rule => 
+            iframe.src && iframe.src.match(rule)
+        )
+    }
+    iframeBannedBy(iframe){
+        let matchingRules = this.bannedIframeRules.filter(rule => iframe.src.match(new RegExp(rule)))
+        if(!matchingRules.length) return false
+
+        let matchingRule = matchingRules[0]
+
+        let matchingServices = Object.keys(Rules)
+            .filter(r => this.config.services.includes(r))
+            .filter(r => Rules[r].iframes)
+            .filter(r => Rules[r].iframes && Rules[r].iframes.includes(matchingRule))
+
+        return matchingServices.length ? matchingServices[0] : false
+    }
+    disableIframe(iframe){
+        if(!iframe.src) return null
+        let key = this.iframeBannedBy(iframe)
+        iframe.setAttribute('data-src', iframe.src)
+        iframe.removeAttribute('src')
+        iframe.disabled = true
+        iframe.classList.add('cookie-consent-blocked')
+        
+
+        let styles = window.getComputedStyle(iframe)
+        let figureIframe = this.create(iframe.parentElement, { 
+            className: "cookie-consent-iframe",
+            style: `width: ${styles.width}; height: ${styles.height}`
+        }, 'figure')
+        this.create(figureIframe, {
+            innerHTML: Lang.get("iframeBlocked").replace("%s", Lang.get(key).name)
+        })
+        let allowButton = this.create(figureIframe, {
+            innerHTML: Lang.get("allow")
+        }, 'button')
+        allowButton.addEventListener('click', ()=>{
+            this.accept(key)
+            window.location.reload()
+        })
+        iframe.parentElement.insertBefore(figureIframe, iframe)
+        iframe.parentElement.insertBefore(iframe, figureIframe)
+
+    }
 
     /** 
      * MISC 
@@ -273,14 +342,20 @@ export default class CookieConsent {
         new MutationObserver((mutations)=>{
             ;[...mutations].map(m => {
                 ;[...m.addedNodes]
-                .filter(n => n.tagName == "SCRIPT")
-                .map(n => {
-                    if(this.isScriptBanned(n)) {
-                        n.type = "javascript/blocked"
-                    }
-                })
+                .filter(n => n.tagName == "SCRIPT" && this.isScriptBanned(n))
+                .map(n => n.type = "javascript/blocked")
+                
+                ;[...m.addedNodes]
+                .filter(n => n.tagName == 'IFRAME' && this.isIframeBanned(n))
+                .map(n => this.disableIframe(n))
             })
         }).observe(document.head, { attributes: true, childList: true, subtree: true })
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            ;[...document.querySelectorAll('iframe')]
+                .filter(iframe => this.isIframeBanned(iframe))
+                .map(iframe => this.disableIframe(iframe))
+        })
     }
     overrideCookieSetter(){
         let cookieSetterOrig = document.__lookupSetter__("cookie");
@@ -289,7 +364,7 @@ export default class CookieConsent {
         this.getBannedCookieRules()
         Object.defineProperty(document, 'cookie', {
             set: function(value){
-                if (!value.match("cookie-consent") && self.bannedCookieRules.some(rule => value.match(rule))) {
+                if (!value.match(/cookie_consent_js/) && self.bannedCookieRules.some(rule => value.match(rule))) {
                     return;
                 }
                 return cookieSetterOrig.apply(document, arguments)

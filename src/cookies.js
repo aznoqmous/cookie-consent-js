@@ -30,9 +30,9 @@ export default class Cookies {
 
     static remove(key){
         // from tarteaucitron
-        document.cookie = key + '="cookie-consent"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/;';
-        document.cookie = key + '="cookie-consent"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/; domain=.' + location.hostname + ';';
-        document.cookie = key + '="cookie-consent"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/; domain=.' + location.hostname.split('.').slice(-2).join('.') + ';';
+        document.cookie = key + '="cookie_consent_js"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/;';
+        document.cookie = key + '="cookie_consent_js"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/; domain=.' + location.hostname + ';';
+        document.cookie = key + '="cookie_consent_js"; expires=Thu, 01 Jan 2000 00:00:00 GMT; path=/; domain=.' + location.hostname.split('.').slice(-2).join('.') + ';';
     }
 
 }

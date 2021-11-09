@@ -25,7 +25,9 @@ You can override default settings by passing a configuration object to `CookieCo
         * */
         services: [
             "google", 
-            "facebook"
+            "facebook",
+            "youtube",
+            "vimeo"
         ], 
 
         title: "", // title of the fixed widget

@@ -127,3 +127,23 @@ $padding: 1rem;
         }
     }
 }
+
+iframe {
+    &.cookie-consent-blocked {
+        display: none;
+    }
+}
+figure.cookie-consent-iframe {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-family: sans-serif;
+    background: $color_dark;
+    color: $color_white;
+    > button {
+        margin-top: 1rem;
+        cursor: pointer;
+    }
+}
