@@ -27,14 +27,13 @@ export default class CookieConsent {
         this.getBannedCookieRules()
         this.getBannedIframeRules()
 
+
         this.observe()
         this.overrideCookieSetter()
     }
     
     init(config){
         this.config = Object.assign(this.config, config)
-        if(!this.config.services.includes('functionnal')) this.config.services.unshift('functionnal')
-        
         Utils.DOMLoaded()
         .then(()=>{
             this.buildPopup()
@@ -53,6 +52,28 @@ export default class CookieConsent {
     }
     isDataSet(){
         return !!(Cookies.get(CookieConsent.key))
+    }
+
+    get enabledServices(){
+        return ['functionnal', ...this.config.services]
+    }
+
+    get allowedRules(){
+        let data = this.getData() 
+        return Object.fromEntries(
+            Object.keys(Rules)
+            .filter(k => !data || typeof data[k] == 'undefined' || data[k] == 'true')
+            .map(k => ([k, Rules[k]]))
+        )
+    }
+        
+    get disallowedRules(){
+        let data = this.getData() 
+        return Object.fromEntries(
+            Object.keys(Rules)
+            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
+            .map(k => ([k, Rules[k]]))
+        )
     }
 
     /**
@@ -131,9 +152,8 @@ export default class CookieConsent {
 
         let services = this.create(this.popupDetails, {className: "services"})
         this.addedTypes = {}
-        Object.keys(Rules).filter(r => this.config.services.includes(r)).map(key =>  this.addedTypes[Rules[key].type] = false)
-
-        this.config.services
+        Object.keys(Rules).filter(r => this.enabledServices.includes(r)).map(key =>  this.addedTypes[Rules[key].type] = false)
+        this.enabledServices
         .sort((a,b)=> {
             if(Rules[a].type == 'functionnal') return -1
             if(Rules[b].type == 'functionnal') return 1
@@ -282,12 +302,11 @@ export default class CookieConsent {
      * */
 
     getBannedScriptRules(){
-        let data = this.getData()
         this.bannedScriptRules = []
-        Object.keys(Rules)
-            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
-            .filter(k => Rules[k].scripts)
-            .map(k => this.bannedScriptRules = [...this.bannedScriptRules, ...Rules[k].scripts])
+        Object.values(this.disallowedRules)
+        .filter(rule => rule.scripts)
+        .map(rule => this.bannedScriptRules.push(...rule.scripts))
+        console.log(this.bannedScriptRules)
     }
     isScriptBanned(script){
         return this.bannedScriptRules.some(rule => 
@@ -300,12 +319,10 @@ export default class CookieConsent {
      * Cookies
      */
     getBannedCookieRules(){
-        let data = this.getData()
         this.bannedCookieRules = []
-        Object.keys(Rules)
-            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
-            .filter(k => Rules[k].cookies)
-            .map(k => this.bannedCookieRules = [...this.bannedCookieRules, ...Rules[k].cookies])
+        Object.values(this.disallowedRules)
+        .filter(rule => rule.cookies)
+        .map(rule => this.bannedCookieRules.push(...rule.cookies))
     }
     deleteBannedCookies(){
         Object.keys(Cookies.getAll())
@@ -317,12 +334,10 @@ export default class CookieConsent {
      * Iframes
      */
     getBannedIframeRules(){
-        let data = this.getData()
-        this.bannedIframeRules = []
-        Object.keys(Rules)
-            .filter(k => data && typeof data[k] !== 'undefined' && data[k] != 'true')
-            .filter(k => Rules[k].iframes)
-            .map(k => this.bannedIframeRules = [...this.bannedIframeRules, ...Rules[k].iframes])
+        this.bannedIframeRules = [] 
+        Object.values(this.disallowedRules)
+        .filter(rule => rule.iframes)
+        .map(rule => this.bannedIframeRules.push(...rule.iframes))
     }
     isIframeBanned(iframe){
         return this.bannedIframeRules.some(rule => 
@@ -336,7 +351,7 @@ export default class CookieConsent {
         let matchingRule = matchingRules[0]
 
         let matchingServices = Object.keys(Rules)
-            .filter(r => this.config.services.includes(r))
+            .filter(r => this.enabledServices.includes(r))
             .filter(r => Rules[r].iframes)
             .filter(r => Rules[r].iframes && Rules[r].iframes.includes(matchingRule))
 
