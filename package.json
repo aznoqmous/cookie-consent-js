@@ -2,17 +2,18 @@
   "name": "cookie-consent",
   "version": "1.0.0",
   "description": "",
-  "main": "blou.js",
+  "main": "src/cookie-consent.js",
   "scripts": {
     "dev": "webpack --watch --mode development",
     "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
+  "browserslist": "> 0.25%, not dead",
   "devDependencies": {
     "@babel/core": "^7.13.14",
-    "@babel/preset-env": "^7.13.12",
-    "babel-loader": "^8.2.2",
+    "@babel/preset-env": "^7.16.0",
+    "babel-loader": "^8.2.3",
     "css-loader": "^3.6.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
