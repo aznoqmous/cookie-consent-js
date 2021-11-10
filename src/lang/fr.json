@@ -28,7 +28,7 @@
         "name": "Google Analytics",
         "description": "Ces cookies servent à générer des statistiques de fréquentation du site."
     },
-    "gtm": {
+    "googletagmanager": {
         "name": "Google Tag Manager",
         "description": "Ces cookies servent à générer des statistiques sur l'utilisation du site."
     },

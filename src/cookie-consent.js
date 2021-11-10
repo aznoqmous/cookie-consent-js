@@ -11,7 +11,7 @@ export default class CookieConsent {
 
     constructor(){
         this.config = {
-            services: Object.keys(Rules),
+            services: Object.keys(Rules).filter(key => key != "functionnal"),
             title: Lang.get("popupTitle"),
             disclaimer: Lang.get("popupDisclaimer"),
             legalNoticeText: Lang.get('legalNotice'),
